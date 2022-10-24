@@ -16,7 +16,7 @@ class BonjourCSVPipeline(object):
         return pipeline
 
     def spider_opened(self, spider):
-        self.file = open('bonjour_data.csv', 'w', encoding = 'utf-8', newline='')
+        self.file = open('bonjour_data.csv', 'w', encoding = 'utf-8-sig', newline='')
 
     def spider_closed(self, spider):
         writer = csv.DictWriter(self.file, fieldnames=self.items[0].keys())
