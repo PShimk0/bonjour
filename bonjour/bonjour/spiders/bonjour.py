@@ -73,13 +73,13 @@ class BonjourSpider(Spider):
                 item["image_urls"] = [x["uri"] for x in data["images"]]
                 item["base_price"] = data.get("base_price")
                 item["offer_price"] = data.get("offer_price")
-                promotion = response.xpath(
+                discount = response.xpath(
                     "//div/span[contains(text(), '%')]/preceding-sibling::text()"
                 ).getall()
-                if promotion:
-                    item["promotion"] = f"{promotion[1]}"
+                if discount:
+                    item["discount"] = f"{discount[1]}"
                 else:
-                    item["promotion"] = None
+                    item["discount"] = None
                 yield item
         except Exception as e:
             pass
