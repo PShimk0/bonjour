@@ -1,8 +1,13 @@
+import csv
+
 from scrapy import signals
 from scrapy.exporters import CsvItemExporter
 
 
-class BonjourPipeline(object):
+class BonjourCSVPipeline(object):
+
+    items = []
+
     @classmethod
     def from_crawler(cls, crawler):
         pipeline = cls()
@@ -11,14 +16,14 @@ class BonjourPipeline(object):
         return pipeline
 
     def spider_opened(self, spider):
-        self.file = open("output.csv", "w+b")
-        self.exporter = CsvItemExporter(self.file)
-        self.exporter.start_exporting()
+        self.file = open('bonjour_data.csv', 'w', encoding = 'utf-8', newline='')
 
     def spider_closed(self, spider):
-        self.exporter.finish_exporting()
+        writer = csv.DictWriter(self.file, fieldnames=self.items[0].keys())
+        writer.writeheader()
+        writer.writerows(self.items)
         self.file.close()
 
     def process_item(self, item, spider):
-        self.exporter.export_item(item)
+        self.items.append(item)
         return item
